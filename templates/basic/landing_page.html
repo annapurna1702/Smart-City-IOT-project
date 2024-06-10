@@ -1,0 +1,615 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{% static 'landing/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'landing/css/owl.carousel.min.css' %}">
+    <link rel="stylesheet" href="{% static 'landing/css/owl.theme.default.min.css' %}">
+    <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="{% static 'landing/css/style.css' %}">
+
+    <title>SmartCity|City management portal</title>
+    <style>
+        #myMap {
+            height: 350px;
+            width: 380px;
+        }
+    </style>
+
+    <script
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCzXv05Tg7stti5DyuH1_FmXPWKFS9EkHEsensor=false">
+        </script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js">
+    </script>
+    <script type="text/javascript">
+        var map;
+        var marker;
+        var myLatlng = new google.maps.LatLng(8.532897984777051, 76.95984865574053);
+        var geocoder = new google.maps.Geocoder();
+        var infowindow = new google.maps.InfoWindow();
+
+        function initialize() {
+            var mapOptions = {
+                zoom: 18,
+                center: myLatlng,
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            };
+
+            map = new google.maps.Map(document.getElementById("myMap"), mapOptions);
+
+            marker = new google.maps.Marker({
+                map: map,
+                position: myLatlng,
+                draggable: true
+            });
+
+            geocoder.geocode({
+                'latLng': myLatlng
+            }, function (results, status) {
+                if (status == google.maps.GeocoderStatus.OK) {
+                    if (results[0]) {
+                        $('#latitude,#longitude').show();
+                        $('#address').val(results[0].formatted_address);
+                        $('#latitude').val(marker.getPosition().lat());
+                        $('#longitude').val(marker.getPosition().lng());
+                        infowindow.setContent(results[0].formatted_address);
+                        infowindow.open(map, marker);
+                    }
+                }
+            });
+
+            google.maps.event.addListener(marker, 'dragend', function () {
+
+                geocoder.geocode({
+                    'latLng': marker.getPosition()
+                }, function (results, status) {
+                    if (status == google.maps.GeocoderStatus.OK) {
+                        if (results[0]) {
+                            $('#address').val(results[0].formatted_address);
+                            $('#latitude').val(marker.getPosition().lat());
+                            $('#longitude').val(marker.getPosition().lng());
+                            infowindow.setContent(results[0].formatted_address);
+                            infowindow.open(map, marker);
+                        }
+                    }
+                });
+            });
+
+        }
+        google.maps.event.addDomListener(window, 'load', initialize);
+    </script>
+</head>
+
+<body data-bs-spy="scroll" data-bs-target=".navbar" data-bs-offset="70">
+
+
+    <!-- TOP NAV -->
+    <!-- <div class="top-nav" id="home">
+        <div class="container">
+            <div class="row justify-content-between">
+                <div class="col-auto">
+                    <p> <i class='bx bxs-envelope'></i> info@example.com</p>
+                    <p> <i class='bx bxs-phone-call'></i> 123 456-7890</p>
+                </div>
+                <div class="col-auto social-icons">
+                    <a href="#"><i class='bx bxl-facebook'></i></a>
+                    <a href="#"><i class='bx bxl-twitter'></i></a>
+                    <a href="#"><i class='bx bxl-instagram'></i></a>
+                    <a href="#"><i class='bx bxl-pinterest'></i></a>
+                </div>
+            </div>
+        </div>
+    </div> -->
+
+    <!-- BOTTOM NAV -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">SMART CITY<span class="dot">.</span></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'credentials:index' %}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#about">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#services">Services</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="#reviews">Reviews</a>
+                    </li>
+                </li>
+                <a class="nav-link" href="mypage"> my Page</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="method">Methods</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="demo">DemoPage</a>
+            </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#signIn">SignIn</a>
+                    </li>
+                </ul>
+                <a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal"
+                    class="btn btn-brand ms-lg-3">Register</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- SLIDER -->
+    <div class="owl-carousel owl-theme hero-slider">
+        <div class="slide slide1">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12 text-center text-white">
+
+                        <h1 class="display-3 my-4">We Provide best <br />waste pickup</h1>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="slide slide2">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12 col-lg-10 offset-lg-1 text-white">
+
+                        <h1 class="display-3 my-4">We provide best<br /> disposal service</h1>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- ABOUT -->
+    <section id="about">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-5 py-5">
+                    <div class="row">
+
+                        <div class="col-12">
+                            <div class="info-box">
+                                <img src="{% static 'landing/img/icon1.png' %}" alt="">
+                                <div class="ms-4">
+                                    <h5>Waste collection</h5>
+                                    <p>We utilize a network of qalified,licensed and insured transportation to collect waste. </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 mt-4">
+                            <div class="info-box">
+                                <img src="{% static 'landing/img/icon2.png' %}" alt="">
+                                <div class="ms-4">
+                                    <h5>Waste Transportation</h5>
+                                    <p> We thoroughly audit each transporter to ensure they have the proper insuarance and permits to
+                                        transport your waste safely and efficiently.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 mt-4">
+                            <div class="info-box">
+                                <img src="{% static 'landing/img/icon3.png' %}" alt="">
+                                <div class="ms-4">
+                                    <h5>Waste Disposal</h5>
+                                    <p>We have developed strong relationships with disposal facilities. </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-5">
+                    <img src="{% static 'landing/img/about.jpg' %}" alt="">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- MILESTONE -->
+    <section id="milestone">
+        <div class="container">
+            <div class="row text-center justify-content-center gy-4">
+                <div class="col-lg-2 col-sm-6">
+                    <h1 class="display-4">100+</h1>
+                    <p class="mb-0">Happy Clients</p>
+                </div>
+                <div class="col-lg-2 col-sm-6">
+                    <h1 class="display-4">20+</h1>
+                    <p class="mb-0">Industries Served</p>
+                </div>
+                <div class="col-lg-2 col-sm-6">
+                    <h1 class="display-4">15+</h1>
+                    <p class="mb-0">Year Of Experience</p>
+                </div>
+                <div class="col-lg-2 col-sm-6">
+                    <h1 class="display-4">90+</h1>
+                    <p class="mb-0">Professional Workers</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- WHat We Do -->
+    <section id="services" class="text-center">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="intro">
+                        <h1>Our Services</h1>
+                        <h2>What We Do?</h2>
+                        <p class="mx-auto">RELIABLE AND EFFICIENT WASTE MANAGEMENT SERVICES</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row g-4">
+                <div class="col-lg-4 col-md-6">
+                    <div class="service">
+                        <img src="{% static 'landing/img/icon1.png' %}" alt="">
+                        <h5>Waste Collection</h5>
+                        <p>We utilize a network of qalified,licensed and insured transportation to collect waste.</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="service">
+                        <img src="{% static 'landing/img/icon2.png' %}" alt="">
+                        <h5>Waste Transportation</h5>
+                        <p>We thoroughly audit each transporter to ensure they have the proper insuarance and permits to
+                            transport your waste safely and efficiently.</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="service">
+                        <img src="{% static 'landing/img/icon3.png' %}" alt="">
+                        <h5>Waste Disposal</h5>
+                        <p>We have developed strong relationships with disposal facilities.</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+    <!-- WHat We Do -->
+
+    <section class="bg-light" id="portfolio">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="intro">
+                        <h6>Work</h6>
+                        <h1>Successful projects</h1>
+                        <p class="mx-auto">Trash wheel is a service provider of waste management services.Through various strategic acquistion,we have built one of the most experienced management teams for waste management.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="projects-slider" class="owl-theme owl-carousel">
+            <div class="project">
+                <div class="overlay"></div>
+                <img src="{% static 'landing/img/project1.jpg' %}" alt="">
+                <div class="content">
+                    <h2>Plastic Waste</h2>
+                  
+                </div>
+            </div>
+            <div class="project">
+                <div class="overlay"></div>
+                <img src="{% static 'landing/img/project2.jpeg' %}" alt="">
+                <div class="content">
+                    <h2>E-Waste</h2>
+              
+                </div>
+            </div>
+            <div class="project">
+                <div class="overlay"></div>
+                <img src="{% static 'landing/img/project3.jpg' %}" alt="">
+                <div class="content">
+                    <h2>Food Waste</h2>
+                 
+                </div>
+            </div>
+            <div class="project">
+                <div class="overlay"></div>
+                <img src="{% static 'landing/img/project4.jpg' %}" alt="">
+                <div class="content">
+                    <h2>Glass Waste</h2>
+                   
+                </div>
+            </div>
+            <div class="project">
+                <div class="overlay"></div>
+                <img src="{% static 'landing/img/project5.jpg' %}" alt="">
+                <div class="content">
+                    <h2>Medical Waste</h2>
+                   
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="team">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="intro">
+                        <h6>Team</h6>
+                        <h1>Team Members</h1>
+                        <p class="mx-auto">We provide best waste pickup services</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                {% for agnt in agents %}
+                <div class="col-lg-4 col-md-8">
+                    <div class="team-member">
+                        <div class="image">
+                            <img src="{{agnt.photo.url}}" alt="" style="height:250px ;">
+                            <div class="social-icons">
+                                <a href="#"><i class='bx bxl-facebook'></i></a>
+                                <a href="#"><i class='bx bxl-twitter'></i></a>
+                                <a href="#"><i class='bx bxl-instagram'></i></a>
+                                <a href="#"><i class='bx bxl-pinterest'></i></a>
+                            </div>
+                            <div class="overlay"></div>
+                        </div>
+
+                        <h5>{{agnt.name}}</h5>
+                        <p>Collection Authority Members</p>
+                    </div>
+                </div>
+                {% endfor %}
+
+            </div>
+        </div>
+    </section>
+
+    <!-- user Review -->
+    <section class="bg-light" id="reviews">
+
+        <div class="owl-theme owl-carousel reviews-slider container">
+            {% for rev in reviews %}
+            <div class="review">
+                <div class="person">
+                    <img src="{% static 'landing/img/team_1.jpg' %}" alt="">
+                    <h5>{{rev.1 |title}}</h5>
+                    <small>User</small>
+                </div>
+                <h3>{{rev.0}}</h3>
+                <div class="stars">
+                    <i class='bx bxs-star'></i>
+                    <i class='bx bxs-star'></i>
+                    <i class='bx bxs-star'></i>
+                    <i class='bx bxs-star'></i>
+                    <i class="bx bxs-star-half"></i>
+                </div>
+                <i class='bx bxs-quote-alt-left'></i>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+    <!-- //user Review -->
+
+    <footer style="margin-top: 100px;">
+        <div class="footer-top text-center">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-lg-6 text-center">
+                        <h4 class="navbar-brand">TRASH WHEEL<span class="dot">.</span></h4>
+                        <p>RELIABLE AND EFFICIENT WASTE MANAGEMENT SERVICES</p>
+                        <div class="col-auto social-icons">
+                            <a href="#"><i class='bx bxl-facebook'></i></a>
+                            <a href="#"><i class='bx bxl-twitter'></i></a>
+                            <a href="#"><i class='bx bxl-instagram'></i></a>
+                            <a href="#"><i class='bx bxl-pinterest'></i></a>
+                        </div>
+                        <div class="col-auto conditions-section">
+                            <a href="#">privacy</a>
+                            <a href="#">terms</a>
+                            <a href="#">disclaimer</i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom text-center">
+            
+        </div>
+    </footer>
+
+
+    <!-- User Registration -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-xl">
+            <div class="modal-content">
+                <div class="modal-body p-0">
+                    <div class="container-fluid">
+                        <div class="row gy-4">
+                            <div class="col-lg-4 col-sm-12 bg-cover" style="background-image: url(./static/landing/img/og-sign-in.png); min-height:300px;">
+                                <div style="margin-top: 160px;" >
+
+                                </div>
+                            </div>
+                            <div class="col-lg-8">
+                                <form class="p-lg-5 col-12 row g-3" method="POST"
+                                    action="" enctype="multipart/form-data"
+                                    onsubmit="return validateForm()">
+                                    {% csrf_token %}
+                                    <div>
+                                        <h1>Create Your Account</h1>
+                                        <p>Feel free to contact us and we will get back to you as soon as possible</p>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <label for="userName" class="form-label">Full name</label>
+                                        <input type="text" required name="name" id="exampleInputName"
+                                            class="form-control" placeholder="Full Name" id="userName"
+                                            aria-describedby="emailHelp">
+                                    </div>
+
+                                    <div class="col-lg-6">
+                                        <label for="userName" class="form-label">Contact number</label>
+                                        <input type="number" name="phone" class="form-control"
+                                            placeholder="Contact Number" id="exampleInpuNumber"
+                                            aria-describedby="emailHelp">
+                                    </div>
+
+                                    <div class="col-12">
+                                        <label for="userName" class="form-label">Image</label>
+                                        <input type="file" required name="photo" class="form-control"
+                                            placeholder="Contact Number" id="userName" aria-describedby="emailHelp">
+
+                                    </div>
+                                    <div class="col-lg-6">  
+                                        <label for="userName" class="form-label">State</label>
+                                        <select name="state" required class="form-control"
+                                            placeholder="state">
+                                        <option value="kerala"> Kerala</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-lg-6">  
+                                        <label for="userName" class="form-label">City</label>
+                                        <select name="city"  class="form-control" placeholder="City">
+                                            <option value="trivandrum">Trivandrum</option>
+                                            <option value="kollam">Kollam</option>
+                                            </select>
+                                    </div>
+                                    <div class="col-12">
+                                        <label for="exampleInputEmail1" class="form-label">Address</label>
+                                        <textarea name="address" id="address" placeholder="Your Location."
+                                            class="form-control" id="" rows="4"></textarea>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <label for="userName" class="form-label">UserName</label>
+                                        <input type="text" name="username" class="form-control"
+                                            placeholder="Create Username" id="userName" aria-describedby="emailHelp">
+
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <label for="userName" class="form-label">Password</label>
+                                        <input type="password" name="password" class="form-control"
+                                            placeholder="Create Password" id="password" aria-describedby="emailHelp">
+                                    </div>
+                                    <div class="col-12">
+                                        <button type="submit" class="btn btn-brand">Register</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- //user_registration -->
+
+    <!-- SigIn -->
+    <div class="modal fade" id="signIn" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-xl">
+            <div class="modal-content">
+                <div class="modal-body p-0">
+                    <div class="container-fluid">
+                        <div class="row gy-4">
+                            <div class="col-lg-4 col-sm-12 bg-cover"
+                                style="background-image: url(./static/landing/img/og-sign-in.png); min-height:300px;">
+                                <div>
+
+                                </div>
+                            </div>
+                            <div class="col-lg-8">
+                                <form class="p-lg-5 col-12 row g-3" method="POST"
+                                    action="{% url 'credentials:signIn' %}">
+                                    {% csrf_token %}
+                                    <div>
+                                        <h1>SignIn</h1>
+                                        <p>Feel free to contact us and we will get back to you as soon as possible</p>
+                                    </div>
+
+                                    <div class="col-lg-12">
+                                        <!-- <label for="userName" class="form-label">UserName</label> -->
+                                        <input type="text" name="username" class="form-control"
+                                            placeholder="Enter Username" id="userName" aria-describedby="emailHelp">
+
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <!-- <label for="userName" class="form-label">Password</label> -->
+                                        <input type="password" name="password" class="form-control"
+                                            placeholder="Enter Password" id="password" aria-describedby="emailHelp">
+                                    </div>
+                                    <div class="col-12">
+                                        <button type="submit" class="btn btn-brand">SigIn</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- //SignIn -->
+
+
+
+
+    <script>
+        function validateForm() {
+            var regName = /\d+$/g;
+            var num = document.getElementById("exampleInpuNumber").value;
+            console.log(num.length)
+
+            if (num.length != 10) {
+                window.alert("Please enter Valid Contact Number");
+
+                return false
+            }
+
+            var name = document.getElementById("exampleInputName").value;
+            if (name == "" || regName.match(name)) {
+
+                window.alert("Please enter Name Properly");
+                return false
+            }
+            if (name.length < 3) {
+                alert( "Name is too Short ")
+                return false
+            }
+            if (name.length > 15) {
+                alert("Name is too long ")
+                return false
+            }
+            var usernameRegex = /^[a-zA-Z0-9]+$/;
+            uname = document.getElementById("username")
+
+            if (uname == "" || usernameRegex.test(uname)){
+                window.alert("Username must Contains Numbers and letters");
+                return false
+            }
+            if (uname.length < 8  || uname.length > 12){
+                window.alert("Username must Contains Numbers and letters 8 -12 characters");
+                return false
+            }
+        }
+    </script>
+
+
+    <script src="{% static 'landing/js/jquery.min.js' %}"></script>
+    <script src="{% static 'landing/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'landing/js/owl.carousel.min.js' %}"></script>
+    <script src="{% static 'landing/js/app.js' %}"></script>
+</body>
+
+</html>

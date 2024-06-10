@@ -1,0 +1,117 @@
+{% extends 'basic/base.html' %} {% load static %} {% block content %}
+
+
+<style>
+    #myMap {
+        height: 350px;
+        width: 380px;
+    }
+</style>
+
+    
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>Add New Waste Bin</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+
+                        <li class="breadcrumb-item active">New Waste Bin</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+        <!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <!-- left column -->
+                <div class="col-md-4" id="myMap" ></div>
+                <div class="col-md-6">
+
+
+                    <!-- general form elements -->
+
+                    <!-- /.card -->
+                    <!-- Horizontal Form -->
+                    <div class="card card-info">
+                        <div class="card-header" style="background-color: #FB5B38;">
+                            <h3 class="card-title">New Waste Bin</h3>
+                        </div>
+                        <!-- /.card-header -->
+                        <!-- form start -->
+                        <form class="form-horizontal" method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
+
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <!-- <label for="exampleInputEmail1">Municiplaity</label> -->
+                                    <input type="text" name="name" class="form-control" id="exampleInputEmail1"
+                                        placeholder="Identity Word">
+                                </div>
+                                <div class="form-group">
+                                    <label for="">Wastebin Image</label>
+                                    <input type="file" name="photo" class="form-control" id="username"
+                                        placeholder="Username">
+                                </div>
+                                <div class="form-group">
+                                    <label for="">Assign Collection agent</label>
+                                    <select class="form-control" placeholder="Username">
+                                        {% for agnt in agents %}
+                                        <option value="{{agnt.id}}">
+                                            {{agnt.name}}
+                                        </option>
+                                        {% endfor %}
+                                        </select>
+                                </div>
+                                <label>Landmark</label>
+                                <div class="form-group">
+                                    <textarea type="text" name="address" class="form-control" rows="3" id="address"
+                                        placeholder="LandMark">
+                                        </textarea>
+                                </div>
+                                <div class="form-group">
+                                    <!-- <label for="exampleInputPassword1">Mayor</label> -->
+                                    <input type="text"  name="latitude" id="latitude" class="form-control"
+                                        id="exampleInputPassword1">
+                                </div>
+                                <div class="form-group">
+                                   
+                                    <!-- <label for="exampleInputPassword1">Mayor</label> -->
+                                    <input type="text"  name="longitude" id="longitude" class="form-control"
+                                        id="exampleInputPassword1">
+                                </div>
+                                
+                         
+                               
+                            </div>
+                            <!-- /.card-body -->
+
+                            <div class="card-footer">
+                                <button type="submit" class="btn" style="background-color: #FB5B38;">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- /.card -->
+
+                </div>
+                <!--/.col (left) -->
+
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+
+{% endblock %}

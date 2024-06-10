@@ -1,0 +1,351 @@
+{% extends 'basic/base.html' %} {% load static %} {% block content %}
+
+<style>
+    .card{
+        background-color: #6d727763 !important;
+    }
+    /* paint background of level meter */
+    .levels {
+        height: 180px;
+        width: 30px;
+        background-color: #9bc2d9c4;
+        border-radius: 2px;
+        display: flex;
+        flex-direction: row;
+        padding: 4px 3px;
+        margin: auto;
+        margin-left: 15px;
+        /* margin-top: 20px; */
+    }
+
+    /* paint not glowing LEDs */
+    .level {
+        position: relative;
+        margin: 0 0px;
+        flex-grow: 1;
+        z-index: 3;
+        background-color: transparent;
+        background-repeat: repeat-y;
+        background-image: linear-gradient(to bottom, #666 3px, transparent 1px);
+        background-size: 100% 4px;
+    }
+
+    /* paint glowing LEDs */
+    .level:before {
+        width: 100%;
+        height: 100%;
+        content: ' ';
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        z-index: 1;
+        background-repeat: no-repeat;
+        background-image: linear-gradient(to top, green 0%, yellow 80%, red 100%);
+        background-size: 100% 100%;
+        clip-path: inset(0% 0 0 0);
+        /* switch off leds via clipping */
+        -webkit-clip-path: inset(0% 0 0 0);
+        /* Safari */
+
+    }
+
+    .lvl_emty {
+        animation: level-animation_empty 500ms alternate infinite;
+    }
+
+    .lvl_half {
+        animation: level-animation_half 500ms alternate infinite;
+    }
+
+    .lvl_full {
+        animation: level-animation_full 500ms alternate infinite;
+    }
+
+    /* for empty */
+    @keyframes level-animation_empty {
+        0% {
+            clip-path: inset(100% 0 0 0);
+            -webkit-clip-path: inset(0% 0 0 0);
+        }
+
+        50% {
+            clip-path: inset(95% 0 0 0);
+            -webkit-clip-path: inset(40% 0 0 0);
+        }
+
+        100% {
+            clip-path: inset(90% 0 0 0);
+            -webkit-clip-path: inset(20% 0 0 0);
+        }
+    }
+
+    /* for half */
+    @keyframes level-animation_half {
+        0% {
+            clip-path: inset(40% 0 0 0);
+            -webkit-clip-path: inset(0% 0 0 0);
+        }
+
+        50% {
+            clip-path: inset(50% 0 0 0);
+            -webkit-clip-path: inset(40% 0 0 0);
+        }
+
+        100% {
+            clip-path: inset(60% 0 0 0);
+            -webkit-clip-path: inset(20% 0 0 0);
+        }
+    }
+
+    /* for full */
+    @keyframes level-animation_full {
+        0% {
+            clip-path: inset(0% 0 0 0);
+            -webkit-clip-path: inset(0% 0 0 0);
+        }
+
+        50% {
+            clip-path: inset(5% 0 0 0);
+            -webkit-clip-path: inset(40% 0 0 0);
+        }
+
+        100% {
+            clip-path: inset(10% 0 0 0);
+            -webkit-clip-path: inset(20% 0 0 0);
+        }
+    }
+
+
+    /* paint gap lines of LEDs */
+    .level::after {
+        width: 100%;
+        height: 100%;
+        content: ' ';
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        z-index: 2;
+        margin-top: 3px;
+        background-image: linear-gradient(to bottom, #333 1px
+                /* space between leds*/
+                , transparent 1px);
+        background-repeat: repeat-y;
+        background-size: 100% 4px;
+        /* 4px LED height */
+        background-color: transparent;
+    }
+
+
+    /* general CSS */
+
+
+
+</style>
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="m-0">Dashboard</h1>
+                    <!-- <button type="button" class="btn btn-info" data-toggle="modal" data-target="#modal-info">
+                        Launch Info Modal
+                    </button> -->
+                </div>
+                <!-- /.col -->
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <!-- <li class="breadcrumb-item"><a href="#">Home</a></li> -->
+                        <!-- <li class="breadcrumb-item active">Dashboard v1</li> -->
+                    </ol>
+                </div>
+                <!-- /.col -->
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+
+            <!-- Main row -->
+            <div class="row">
+                <!-- Left col -->
+                <section class="col-lg-12 connectedSortable">
+                    <!-- TABLE: LATEST ORDERS -->
+                    <div class="card">
+                        <div class="card-header border-transparent">
+                            <h3 class="card-title">WASTE BIN STATUS</h3>
+
+                            <div class="card-tools">
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                                <button type="button" class="btn btn-tool" data-card-widget="remove">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body p-0">
+                            <div class="table-responsive">
+                                <table class="table m-0">
+
+                                    <tbody>
+                                        {% for bn in bins %}
+                                        <tr>
+
+                                            <td style="width: 300px;">
+                                                <div>
+                                                    <img src="{{bn.photo.url}}" style="height: 180px;">
+                                                    <span class="badge badge-success">{{bn.landmark}}</span>
+                                                </div>
+                                            </td>
+
+
+                            <td>
+                                {% if bn.level == 0 %}
+                                <!-- level   empty -->
+                                <div class="levels" id="levels">
+                                    <div class="level lvl_emty" id="level1"></div>
+                                    <div class="level lvl_emty" id="level2"></div>
+                                </div>
+
+
+                                <!-- level half -->
+                                {% elif bn.level == 1 %}
+                                <div class="levels" id="levels">
+                                    <div class="level lvl_half" id="level1"></div>
+                                    <div class="level lvl_half" id="level2"></div>
+                                </div>
+
+
+                                <!-- level half -->
+
+                                <!-- level full -->
+                                {% elif bn.level == 2 %}
+                                <div class="levels" id="levels">
+                                    <div class="level lvl_full" id="level1"></div>
+                                    <div class="level lvl_full" id="level2"></div>
+                                </div>
+                                {% endif %}
+
+                                <!-- level full -->
+                                <div class="footer">
+                                    <div class="name">Level Meter</div>
+                                </div>
+
+                            <td>
+                            </td>
+
+                            </tr>
+
+                            {% endfor %}
+                            </tbody>
+                            </table>
+                        </div>
+                        <!-- /.table-responsive -->
+                    </div>
+                    <!-- /.card-body -->
+                    <div class="card-footer clearfix">
+                        <a href="javascript:void(0)" class="btn btn-sm btn-info float-left">Refresh</a>
+                        <a href="javascript:void(0)" class="btn btn-sm btn-secondary float-right">View All
+                            Orders</a>
+                    </div>
+                    <!-- /.card-footer -->
+            </div>
+            <!-- /.card -->
+
+    </section>
+    <!-- /.Left col -->
+    <!-- right col (We are only adding the ID to make the widgets sortable)-->
+    <section class="col-lg-3 connectedSortable">
+
+
+
+    </section>
+    <!-- right col -->
+</div>
+<!-- /.row (main row) -->
+</div>
+<!-- /.container-fluid -->
+</section>
+<!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+
+
+
+<style>
+    #modal-info {
+        /* margin: 24px; */
+        /* width: 50px; */
+        /* height: 50px; */
+        /* background: #f50057; */
+        animation: modal-info 1.7s ease infinite;
+    }
+
+    @keyframes modal-info {
+        0% {
+            transform: scale(0.7, 0.7);
+        }
+
+        25% {
+            transform: scale(0.8, 0.8);
+        }
+
+        50% {
+            transform: scale(0.7, 0.7);
+        }
+
+        75% {
+            transform: scale(0.8, 0.8);
+        }
+
+        100% {
+            transform: scale(0.7, 0.7);
+        }
+    }
+</style>
+
+
+<script>
+    function submit_amount() {
+        let order_id = document.getElementById("o_id").innerHTML;
+        let weight = document.getElementById("weight").value;
+        let amount = document.getElementById("amount").value;
+
+        let qr = document.getElementById("show_qrcode");
+        let pymnt = document.getElementById("update_amount");
+        qr.classList.add("show");
+        qr.style.display = "block";
+        pymnt.classList.remove("show")
+        console.log(order_id, weight, amount)
+        $.ajax({
+            type: 'POST',
+            url: 'http://127.0.0.1:8000/proceed_payment',
+            data: {
+                csrfmiddlewaretoken: '{{csrf_token}}',
+                order_id: order_id,
+                weight: weight,
+                amount: amount
+            },
+            success: function callback(response) {
+                let result_data = response
+            }
+        })
+    }
+
+    function close_payment() {
+        let qcr = document.getElementById("show_qrcode");
+        qcr.classList.remove("show");
+        qcr.style.display = "none";
+
+    }
+</script>
+{% endblock %}

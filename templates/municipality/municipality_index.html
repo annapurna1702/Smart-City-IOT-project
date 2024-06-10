@@ -1,0 +1,246 @@
+{% extends 'basic/base.html' %} {% load static %} {% block content %}
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="m-0">Dashboard</h1>
+                </div>
+                <!-- /.col -->
+                <!-- <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item active">Dashboard v1</li>
+                    </ol>
+                </div> -->
+                <!-- /.col -->
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+            <!-- Small boxes (Stat box) -->
+            <div class="row">
+                <div class="col-lg-3 col-6">
+                    <!-- small box -->
+                    <div class="small-box bg-info">
+                        <div class="inner">
+                            <h3>{{todays_req.count}}</h3>
+
+                            <p>Todays Requests</p>
+                        </div>
+                        <div class="icon">
+                            <i class="ion ion-bag"></i>
+                        </div>
+                        <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                    </div>
+                </div>
+                <!-- ./col -->
+                <div class="col-lg-3 col-6">
+                    <!-- small box -->
+                    <div class="small-box bg-info">
+                        <div class="inner">
+                            <h3>{{completed.count}}<sup style="font-size: 20px"></sup></h3>
+
+                            <p>Completed Requests</p>
+                        </div>
+                        <div class="icon">
+                            <i class="ion ion-stats-bars"></i>
+                        </div>
+                        <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                    </div>
+                </div>
+                <!-- ./col -->
+                <div class="col-lg-3 col-6">
+                    <!-- small box -->
+                    <div class="small-box bg-info">
+                        <div class="inner">
+                            <h3>{{users_tot}}</h3>
+
+                            <p>User Registrations</p>
+                        </div>
+                        <div class="icon">
+                            <i class="ion ion-person-add"></i>
+                        </div>
+                        <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                    </div>
+                </div>
+                <!-- ./col -->
+                <div class="col-lg-3 col-6">
+                    <!-- small box -->
+                    <div class="small-box bg-info">
+                        <div class="inner">
+                            <h3>{{agents_list.count}}</h3>
+
+                            <p>Collection Agents</p>
+                        </div>
+                        <div class="icon">
+                            <i class="ion ion-pie-graph"></i>
+                        </div>
+                        <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                    </div>
+                </div>
+                <!-- ./col -->
+            </div>
+            <!-- /.row -->
+            <!-- Main row -->
+            <div class="row">
+                <!-- Left col -->
+                <div class="col-md-6">
+                    {% for fed in feeds %}
+                    <!-- User Feeds -->
+                    <div class="card card-widget">
+                        <div class="card-header">
+                            <div class="user-block">
+                                <img class="img-circle" src="./media/{{fed.3}}" alt="User Image">
+                                <span class="username"><a href="#">{{fed.2}}.</a></span>
+                                <span class="description">Shared publicly - {{fed.uploaded_on}} Today</span>
+                            </div>
+
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body">
+                            <img class="img-fluid pad" src="./media/{{fed.0}}" alt="Photo">
+
+                            <p>{{fed.1}}</p>
+
+                        </div>
+                        <div class="card-footer card-comments">
+
+                        </div>
+
+
+                    </div>
+                    {% endfor %}
+                    <!-- //user feeds -->
+
+
+                </div>
+                <!-- Left col -->
+                <section class="col-lg-6 connectedSortable">
+                    <!-- TABLE: LATEST ORDERS -->
+                    <div class="card">
+                        <div class="card-header border-transparent">
+                            <h3 class="card-title">Latest Orders</h3>
+
+                            <div class="card-tools">
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                                <button type="button" class="btn btn-tool" data-card-widget="remove">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body p-0">
+                            <div class="table-responsive">
+                                <table class="table m-0">
+                                    <thead>
+                                        <tr>
+                                            <th>Order ID</th>
+                                            <th>Address </th>
+                                            <!-- <th>Status</th>
+                                            <th>Pickup Note</th> -->
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for trp in requests %}
+                                        <tr>
+                                            <td id="o_id">{{trp.order_Id}}</td>
+                                            <!-- <td>{{trp.garbage}}</td> -->
+                                            <!-- <td><span class="badge badge-success">{{trp.request_status}}</span></td> -->
+                                            <td>
+                                                <div class="sparkbar" data-color="#00a65a" data-height="20">
+                                                    {{trp.address}}</div>
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-success" data-toggle="modal"
+                                                    data-target="#feedback">Assign </button>
+                                            </td>
+                                        </tr>
+                                        <!-- assign to agent-->
+                                        <div class="modal fade" id="feedback">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h4 class="modal-title">Assign To Collection Authority</h4>
+                                                        <button type="button" class="close" data-dismiss="modal"
+                                                            aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <div class="card-body">
+                                                            <form method="POST"
+                                                                action="{% url 'credentials:assign_collection_agent' id=trp.id %}">
+                                                                {% csrf_token %}
+                                                                <div class="row">
+                                                                    <div class="col-sm-12">
+                                                                        <p><span><b>Address : </b></span>
+                                                                            {{trp.address}}</p>
+                                                                    </div>
+                                                                    <div class="col-sm-12">
+                                                                        <!-- text input -->
+                                                                        <div class="form-group">
+
+                                                                            </span><label></label>
+                                                                            <select class="form-control" name="agent">
+                                                                                {% for mnc in agents_list %}
+                                                                                <option value="{{mnc.username}}">
+                                                                                    {{mnc.name}}</option>
+                                                                                {% endfor %}
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+
+                                                                </div>
+
+                                                        </div>
+                                                    </div>
+                                                    <div0. class="modal-footer justify-content-between">
+                                                        <button type="button" class="btn btn-default"
+                                                            data-dismiss="modal">Close</button>
+                                                        <button type="submit" class="btn btn-secondary">
+                                                            Assign Collection Authority</button>
+                                                </div>
+                                                </form>
+                                            </div>
+                                            <!-- /.modal-content -->
+                                        </div>
+                                        <!-- /.modal-municipality -->
+                            </div>
+                            <!-- modal popup feedback -->
+
+                            {% endfor %}
+                            </tbody>
+                            </table>
+                        </div>
+                        <!-- /.table-responsive -->
+                    </div>
+                    <!-- /.card-body -->
+                    <div class="card-footer clearfix">
+                        <a href="javascript:void(0)" class="btn btn-sm btn-info float-left">Refresh</a>
+                        <a href="javascript:void(0)" class="btn btn-sm btn-secondary float-right">View All
+                            Orders</a>
+                    </div>
+                    <!-- /.card-footer -->
+            </div>
+            <!-- /.card -->
+
+    </section>
+</div>
+</div>
+<!-- /.container-fluid -->
+</section>
+<!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+{% endblock %}

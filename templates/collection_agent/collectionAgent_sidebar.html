@@ -1,0 +1,150 @@
+{% load static %}
+
+
+<style>
+    .switch {
+        position: relative;
+        display: inline-block;
+        width: 60px;
+        height: 34px;
+    }
+    
+    .switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+    
+    .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgb(0, 0, 0);
+        -webkit-transition: .4s;
+        transition: .4s;
+    }
+    
+    .slider:before {
+        position: absolute;
+        content: "";
+        height: 26px;
+        width: 26px;
+        left: 4px;
+        bottom: 4px;
+        background-color: white;
+        -webkit-transition: .4s;
+        transition: .4s;
+    }
+    
+    input:checked+.slider {
+        background-color: #26be21;
+    }
+    
+    input:focus+.slider {
+        box-shadow: 0 0 1px #2196F3;
+    }
+    
+    input:checked+.slider:before {
+        -webkit-transform: translateX(26px);
+        -ms-transform: translateX(26px);
+        transform: translateX(26px);
+    }
+    /* Rounded sliders */
+    
+    .slider.round {
+        border-radius: 34px;
+    }
+    
+    .slider.round:before {
+        border-radius: 50%;
+    }
+</style>
+
+<!-- Main Sidebar Container -->
+<aside class="main-sidebar sidebar-light-purple elevation-4">
+    <!-- Brand Logo -->
+    <!-- <a href="../../index3.html" class="brand-link">
+        <img src="../../dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+        <span class="brand-text font-weight-light">collection Agent 3</span>
+    </a> -->
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <!-- Sidebar user (optional) -->
+        <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+            <div class="image">
+                <img src="{{collectionAgent.photo.url}}" class="img-circle elevation-2" alt="User Image">
+            </div>
+            <div class="info">
+                <a href="#" class="d-block"> {{collectionAgent.name}}</a>
+            </div>
+        </div>
+
+        <!-- SidebarSearch Form -->
+     
+
+
+        <!-- Sidebar Menu -->
+        <nav class="mt-2">
+            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                <li class="nav-item">
+                    <a href="" class="nav-link">
+                        <i class="nav-icon fas fa-copy"></i>
+                        <p>
+                            View Feedbacks
+                            <i class="fas fa-angle-left right"></i>
+                            <span class="badge badge-info right"></span>
+                        </p>
+                    </a>
+                 
+                </li>
+
+                <li class="nav-item">
+                    <a href="{% url 'credentials:logout' %}" class="nav-link">
+                        <i class="nav-icon fas fa-table"></i>
+                        <p>
+                            Logout
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+                    
+                </li>
+            </ul>
+        </nav>
+        <!-- /.sidebar-menu -->
+    </div>
+    <!-- /.sidebar -->
+</aside>
+
+<script>
+    function change_Status() {
+        let inp = document.getElementById("change_off");
+
+        let status = ""
+        if (inp.checked == true) {
+
+            document.getElementById("online").innerHTML = "Online"
+            status = "online"
+
+        }
+        if (inp.checked == false) {
+
+            document.getElementById("online").innerHTML = "Offline"
+            status = "offline"
+        }
+
+        console.log(status, "ssss")
+        $.ajax({
+            type: 'POST',
+            url: 'http://127.0.0.1:8000/update_activeStatus',
+            data: {
+                csrfmiddlewaretoken: '{{ csrf_token }}',
+                status: status
+            },
+
+        })
+    }
+</script>
