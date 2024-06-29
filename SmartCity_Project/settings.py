@@ -51,7 +51,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'SmartWasteBin_Project.urls'
+ROOT_URLCONF = 'SmartCity_Project.urls'
 
 TEMPLATES = [
     {
@@ -69,7 +69,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'SmartWasteBin_Project.wsgi.application'
+WSGI_APPLICATION = 'SmartCity_Project.wsgi.application'
 
 
 # Database

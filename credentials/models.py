@@ -9,6 +9,7 @@ class Credentials(models.Model):
     password = models.CharField(max_length=100)
     user_type = models.CharField(max_length=100)
     user_status = models.CharField(max_length=100)
+    municipality = models.CharField(max_length=30)
 
 
 
