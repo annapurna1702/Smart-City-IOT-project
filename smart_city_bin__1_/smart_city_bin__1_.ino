@@ -13,7 +13,7 @@ void setup()
   delay(500);
   Serial3.println("AT+CWMODE=3\r\n");
   delay(500);
-  Serial3.println("AT+CWJAP=\"Redmi\",\"123456789\"\r\n");
+  Serial3.println("AT+CWJAP=\"<connect>\",\"<pswrd>\"\r\n");
   delay(500);
   Serial3.println("AT+CIPMUX=1\r\n");
   delay(500);
@@ -41,7 +41,7 @@ void loop()
   Serial.print("Level of waste=");
   Serial.println(value);
 
-  Serial3.print("AT+CIPSTART=\"TCP\",\"192.168.18.187\",80\r\n");
+  Serial3.print("AT+CIPSTART=\"TCP\",\"<ip>\",80\r\n");
   delay(100);
   if (Serial3.find("Error1"))
   {
@@ -52,7 +52,7 @@ void loop()
   delay(100);
   if (Serial3.find(">"))
   {
-    Serial3.print("GET http://192.168.18.187/bin/data.php?id=");
+    Serial3.print("GET http://<ip>/bin/data.php?id=");
     Serial3.print(value);
     Serial3.print("&gi=34");
     Serial.println("success");
@@ -60,19 +60,19 @@ void loop()
 
 
     Serial3.println("AT+CIPCLOSE");
-    Serial3.print("AT+CIPSTART=\"TCP\",\"192.168.18.187\",80\r\n");
+    Serial3.print("AT+CIPSTART=\"TCP\",\"<ip>\",80\r\n");
     delay(100);
     Serial3.println("AT+CIPSEND=200\r\n");
     delay(100);
     Serial3.println("AT+CIPCLOSE");
         Serial3.println("AT+CIPCLOSE");
-    Serial3.print("AT+CIPSTART=\"TCP\",\"192.168.18.187\",80\r\n");
+    Serial3.print("AT+CIPSTART=\"TCP\",\"<ip>\",80\r\n");
     delay(100);
     Serial3.println("AT+CIPSEND=200\r\n");
     delay(100);
     Serial3.println("AT+CIPCLOSE");
         Serial3.println("AT+CIPCLOSE");
-    Serial3.print("AT+CIPSTART=\"TCP\",\"192.168.18.187\",80\r\n");
+    Serial3.print("AT+CIPSTART=\"TCP\",\"<ip>\",80\r\n");
     delay(100);
     Serial3.println("AT+CIPSEND=200\r\n");
     delay(100);
